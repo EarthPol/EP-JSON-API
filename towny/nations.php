@@ -34,8 +34,9 @@ header('Content-type: application/json');
 		} else {
 			echo '{';
 			try {
-				$stmt = $tdb->query('SELECT * FROM '.$column.' WHERE name = "'.$nation.'";');
-				while($row = $stmt->fetch()){
+				$stmt = $tdb->prepare('SELECT * FROM '.$column.' WHERE name = ?;');
+				$stmt->execute(array($nation));
+				while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 					echo '"'.$row['name'].'": {';
 					echo '"capital": "'.$row['capital'].'",';
 					echo '"tag": "'.$row['tag'].'",';

@@ -37,8 +37,9 @@ header('Content-type: application/json');
 	} else {
 		echo '{';
 		try {
-			$stmt = $tdb->query('SELECT * FROM '.$column.' WHERE name = "'.$town.'";');
-			while($row = $stmt->fetch()){
+			$stmt = $tdb->prepare('SELECT * FROM '.$column.' WHERE name = ?;');
+			$stmt->execute(array($town));
+			while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 				echo '"'.$row['name'].'": {';
 				echo '"mayor": "'.$row['mayor'].'",';
 				echo '"nation": "'.$row['nation'].'",';
