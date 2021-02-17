@@ -12,13 +12,12 @@ Mixture of PHP &amp; MySQL magic to create readable json files for any end-users
 
 ## Installation
 1. Create a MySQL user that has READ/SHOW access only to your Towny Database.
-   1. Run the command in Mysql, `CREATE USER 'api'@'localhost' IDENTIFIED WITH mysql_native_password BY 'PASSWORD'`
-   2. Run the command in Mysql, `GRANT SELECT,SHOW VIEW ON towny.* TO 'api'@'localhost';
-2. Drag and drop `includes` and `towny` into your web servers directory.
+   1. Run the command in Mysql, `GRANT SELECT, SHOW VIEW ON towny.* TO 'towny_readonly'@’localhost′ IDENTIFIED BY ‘supercalifragilisticexpialidocious‘`
+2. Drag and drop `config.php & keys.php` and `json/towny` into your web servers directory.
    1. Configure `includes/config.php` by setting your Host, Username, Password, Database name and Mysql Port.
-   2. Configure each `town.php, resident.php, nations.php` variables such as `$column = 'towny_nations';` to match your case sensitive database, some databases require you set this as `$column = 'TOWNY_NATIONS';`
-3. Once configured properly, you should be able to visit your web servers address and call into the `town.php, resident.php, nations.php` files. For example, `http://localhost/towny/town.php`
+   2. Configure each `$column_?` variables such as `$column_nations = 'towny_nations';` in `config.php` to match your case sensitive database, some database servers (MySQL UNIX) require you set this as `$column_nations = 'TOWNY_NATIONS';`
+3. Once configured properly, you should be able to visit your web servers address and call into the `town.php, resident.php, nations.php` files. For example, `http://localhost/json/towny/town.php`
 
-## API Usage 
+## API Usage (Edit me)
 1. Read our documentation for EarthPol's api, (https://earthpol.github.io/dist/api.html)
 2. You can do `{method}.php?name={townname|resident|nationname}` to get individual data, or abstain for using `?name=` and pull all of the data at once.
