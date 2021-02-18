@@ -21,57 +21,37 @@
 			if (isset($_GET['name'])) {
 				
 				$nation = $_GET['name'];
-				header('Content-type: application/json');
-				if($nation == "allnations"){
-					//Returns results for ALL NATIONS!
-						echo '{';
-							try {
-								// Selects all nations and gets the results
-									$stm = $pdo->query("SELECT * FROM `".$column_nations."`");
-									while($row = $stm->fetch(PDO::FETCH_ASSOC)){
-										echo '"'.$row['name'].'": {';
-										echo '"capital": "'.$row['capital'].'",';
-										echo '"tag": "'.$row['tag'].'",';
-										echo '"allies": "'.$row['allies'].'",';
-										echo '"enemies": "'.$row['enemies'].'",';
-										echo '"registered": "'.$row['registered'].'",';
-										echo '"nationBoard": "'.$row['nationBoard'].'",';
-										echo '"mapColorHexCode": "'.$row['mapColorHexCode'].'",';
-										echo '"nationSpawn": "'.$row['nationSpawn'].'",';
-										echo '"isPublic": "'.$row['isPublic'].'",';
-										echo '"isOpen": "'.$row['isOpen'].'"';
-										echo '},';
-									}
-								}
-							 catch(PDOException $e){
-								echo $e->getMessage();
-							}
-						echo '"JSONAPI By 0xBit": {}}';
-				} else {
-					echo '{';
-					try {
-							$stm = $pdo->prepare("SELECT * FROM `".$column_nations."` WHERE name = ?");
-							$stm->bindValue(1,$nation);
-							$stm->execute();
-							while($row = $stm->fetch(PDO::FETCH_ASSOC)){
-								echo '"'.$row['name'].'": {';
-								echo '"capital": "'.$row['capital'].'",';
-								echo '"tag": "'.$row['tag'].'",';
-								echo '"allies": "'.$row['allies'].'",';
-								echo '"enemies": "'.$row['enemies'].'",';
-								echo '"registered": "'.$row['registered'].'",';
-								echo '"nationBoard": "'.$row['nationBoard'].'",';
-								echo '"mapColorHexCode": "'.$row['mapColorHexCode'].'",';
-								echo '"nationSpawn": "'.$row['nationSpawn'].'",';
-								echo '"isPublic": "'.$row['isPublic'].'",';
-								echo '"isOpen": "'.$row['isOpen'].'"';
-								echo '}';
-							}
-						} catch(PDOException $e) {
-							echo $e->getMessage();
-						}
-					echo '}';
+
+				// Start building the query
+				$query = "SELECT * FROM `".$column_nations."`";
+				$params = array();
+				if($nation !== 'allnations'){
+					// A nation was provided so ammend the query
+					$query .= ' WHERE name = :name';
+					$params[':name'] = $nation;
 				}
+
+				try {
+					// Run the query
+					$stmt = $pdo->prepare($query);
+					$stmt->execute($params);
+
+					// Get the resulting data
+					$results = $array();
+					while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+						$results[$row['name']] = $row;
+						unset($results[$row['name']]['name']);
+					}
+				} catch(PDOException $e) {
+					die($e->getMessage());
+				}
+
+				// Add in 0x's name
+				$results['JSONAPI By 0xBit'] = ':)';
+
+				// Set the header and return the results
+				header('Content-type: application/json');
+				echo json_encode($results);
 			} else {
 				//INVALID REQUEST BECAUSE NAME WASN'T DEFINED.
 				http_response_code(400);
