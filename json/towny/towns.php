@@ -19,61 +19,38 @@
 			
 			//Gets ?name= from URL and sets it to $town variable, if ?name= is set.
 			if (isset($_GET['name'])) {
-				
 				$town = $_GET['name'];
-				header('Content-type: application/json');
-				if($town == "alltowns"){
-					//Returns results for ALL TOWNS!
-						echo '{';
-							try {
-								// Selects all towns and gets the results
-									$stm = $pdo->query("SELECT * FROM `".$column_towns."`");
-									while($row = $stm->fetch(PDO::FETCH_ASSOC)){
-										echo '"'.$row['name'].'": {';
-										echo '"mayor": "'.$row['mayor'].'",';
-										echo '"nation": "'.$row['nation'].'",';
-										echo '"assistants": "'.$row['assistants'].'",';
-										echo '"townBoard": "'.$row['townBoard'].'",';
-										echo '"tag": "'.$row['tag'].'",';
-										echo '"open": "'.$row['open'].'",';
-										echo '"public": "'.$row['public'].'",';
-										echo '"spawn": "'.$row['spawn'].'",';
-										echo '"outpostSpawns": "'.$row['outpostSpawns'].'",';
-										echo '"outlaws": "'.$row['outlaws'].'",';
-										echo '"registered": "'.$row['registered'].'"';
-										echo '},';
-									}
-								}
-							 catch(PDOException $e){
-								echo $e->getMessage();
-							}
-						echo '"JSONAPI By 0xBit": {}}';
-				} else {
-					echo '{';
-					try {
-							$stm = $pdo->prepare("SELECT * FROM `".$column_towns."` WHERE name = ?");
-							$stm->bindValue(1,$town);
-							$stm->execute();
-							while($row = $stm->fetch(PDO::FETCH_ASSOC)){
-								echo '"'.$row['name'].'": {';
-								echo '"mayor": "'.$row['mayor'].'",';
-								echo '"nation": "'.$row['nation'].'",';
-								echo '"assistants": "'.$row['assistants'].'",';
-								echo '"townBoard": "'.$row['townBoard'].'",';
-								echo '"tag": "'.$row['tag'].'",';
-								echo '"open": "'.$row['open'].'",';
-								echo '"public": "'.$row['public'].'",';
-								echo '"spawn": "'.$row['spawn'].'",';
-								echo '"outpostSpawns": "'.$row['outpostSpawns'].'",';
-								echo '"outlaws": "'.$row['outlaws'].'",';
-								echo '"registered": "'.$row['registered'].'"';
-								echo '}';
-							}
-						} catch(PDOException $e) {
-							echo $e->getMessage();
-						}
-					echo '}';
+
+				// Build the query
+				$query = 'SELECT '.implode(', ', $columns_town).' FROM `'.$column_towns.'`';
+				$params = array();
+				if($town !== 'alltowns'){
+					// A nation was provided so ammend the query
+					$query .= ' WHERE name = :name';
+					$params[':name'] = $town;
 				}
+
+				try {
+					// Run the query
+					$stmt = $pdo->prepare($query);
+					$stmt->execute($params);
+
+					// Get the resulting data
+					$results = $array();
+					while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+						$results[$row['name']] = $row;
+						unset($results[$row['name']]['name']);
+					}
+				} catch(PDOException $e) {
+					die($e->getMessage());
+				}
+
+				// Add in 0x's name
+				$results['JSONAPI By 0xBit'] = ':)';
+
+				// Set the header and return the results
+				header('Content-type: application/json');
+				echo json_encode($results);
 			} else {
 				//INVALID REQUEST BECAUSE NAME WASN'T DEFINED.
 				http_response_code(400);

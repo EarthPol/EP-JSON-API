@@ -19,11 +19,10 @@
 			
 			//Gets ?name= from URL and sets it to $nation variable, if ?name= is set.
 			if (isset($_GET['name'])) {
-				
 				$nation = $_GET['name'];
 
-				// Start building the query
-				$query = "SELECT * FROM `".$column_nations."`";
+				// Build the query
+				$query = 'SELECT '.implode(', ', $columns_nations).' FROM `'.$column_nations.'`';
 				$params = array();
 				if($nation !== 'allnations'){
 					// A nation was provided so ammend the query

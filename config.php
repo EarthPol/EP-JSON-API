@@ -38,9 +38,9 @@ $column_residents = "towny_residents";
 
 
 // The columns to be returned to the user for each endpoint
-$columns_town = array();
+$columns_towns = array('name', 'mayor', 'nation', 'assistants', 'townBoard', 'tag', 'open', 'public', 'spawn', 'outpostSpawns', 'outlaws', 'registered');
 $columns_nations = array('name', 'capital', 'tag', 'allies', 'enemies', 'registered', 'nationBoard', 'mapColorHexCode', 'nationSpawn', 'isPublic', 'isOpen');
-$columns_residents = array();
+$columns_residents = array('name', 'town', 'town-rank', 'nation-ranks', 'lastOnline', 'registered', 'title', 'surname', 'friends', 'uuid');
 
 // READ-ONLY USER MYSQL COMMAND LINE
 // GRANT SELECT, SHOW VIEW ON towny.* TO 'towny_readonly'@’localhost′ IDENTIFIED BY ‘supercalifragilisticexpialidocious‘;
