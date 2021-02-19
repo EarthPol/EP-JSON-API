@@ -8,7 +8,7 @@
 		$key = $_GET['key'];
 		
 		//Load (keys.php)
-		include('../keys.php');
+		include('../../keys.php');
 		
 		//Verify Key exists in Defined Keys (keys.php)
 		if(in_array($key, $keys)){
