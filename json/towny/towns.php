@@ -8,7 +8,7 @@
 		$key = $_GET['key'];
 		
 		//Load (keys.php)
-		include('../keys.php');
+		include('../../keys.php');
 		
 		//Verify Key exists in Defined Keys (keys.php)
 		if(in_array($key, $keys)){
@@ -22,7 +22,7 @@
 				$town = $_GET['name'];
 
 				// Build the query
-				$query = 'SELECT '.implode(', ', $columns_town).' FROM `'.$column_towns.'`';
+				$query = 'SELECT '.implode(', ', $rows_towns).' FROM `'.$column_towns.'`';
 				$params = array();
 				if($town !== 'alltowns'){
 					// A nation was provided so ammend the query
@@ -36,7 +36,7 @@
 					$stmt->execute($params);
 
 					// Get the resulting data
-					$results = $array();
+					$results = array();
 					while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 						$results[$row['name']] = $row;
 						unset($results[$row['name']]['name']);
