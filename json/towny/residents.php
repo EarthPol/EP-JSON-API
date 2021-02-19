@@ -8,7 +8,7 @@
 		$key = $_GET['key'];
 		
 		//Load (keys.php)
-		include('../keys.php');
+		include('../../keys.php');
 		
 		//Verify Key exists in Defined Keys (keys.php)
 		if(in_array($key, $keys)){
@@ -19,57 +19,38 @@
 			
 			//Gets ?name= from URL and sets it to $resident variable, if ?name= is set.
 			if (isset($_GET['name'])) {
-				
 				$resident = $_GET['name'];
-				header('Content-type: application/json');
-				if($resident == "allresidents"){
-					//Returns results for ALL RESIDENTS!
-						echo '{';
-							try {
-								// Selects all towns and gets the results
-									$stm = $pdo->query("SELECT * FROM `".$column_residents."`");
-									while($row = $stm->fetch(PDO::FETCH_ASSOC)){
-										echo '"'.$row['name'].'": {';
-										echo '"town": "'.$row['town'].'",';
-										echo '"town-rank": "'.$row['town-ranks'].'",';
-										echo '"nation-ranks": "'.$row['nation-ranks'].'",';
-										echo '"lastOnline": "'.$row['lastOnline'].'",';
-										echo '"registered": "'.$row['registered'].'",';
-										echo '"title": "'.$row['title'].'",';
-										echo '"surname": "'.$row['surname'].'",';
-										echo '"friends": "'.$row['friends'].'",';
-										echo '"uuid": "'.$row['uuid'].'"';
-										echo '},';
-									}
-								}
-							 catch(PDOException $e){
-								echo $e->getMessage();
-							}
-						echo '"JSONAPI By 0xBit": {}}';
-				} else {
-					echo '{';
-					try {
-							$stm = $pdo->prepare("SELECT * FROM `".$column_residents."` WHERE name = ?");
-							$stm->bindValue(1,$resident);
-							$stm->execute();
-							while($row = $stm->fetch(PDO::FETCH_ASSOC)){
-								echo '"'.$row['name'].'": {';
-								echo '"town": "'.$row['town'].'",';
-								echo '"town-rank": "'.$row['town-ranks'].'",';
-								echo '"nation-ranks": "'.$row['nation-ranks'].'",';
-								echo '"lastOnline": "'.$row['lastOnline'].'",';
-								echo '"registered": "'.$row['registered'].'",';
-								echo '"title": "'.$row['title'].'",';
-								echo '"surname": "'.$row['surname'].'",';
-								echo '"friends": "'.$row['friends'].'",';
-								echo '"uuid": "'.$row['uuid'].'"';
-								echo '}';
-							}
-						} catch(PDOException $e) {
-							echo $e->getMessage();
-						}
-					echo '}';
+
+				// Build the query
+				$query = 'SELECT '.implode(', ', $rows_residents).' FROM `'.$column_residents.'`';
+				$params = array();
+				if($resident !== 'allresidents'){
+					// A nation was provided so ammend the query
+					$query .= ' WHERE name = :name';
+					$params[':name'] = $resident;
 				}
+
+				try {
+					// Run the query
+					$stmt = $pdo->prepare($query);
+					$stmt->execute($params);
+
+					// Get the resulting data
+					$results = array();
+					while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+						$results[$row['name']] = $row;
+						unset($results[$row['name']]['name']);
+					}
+				} catch(PDOException $e) {
+					die($e->getMessage());
+				}
+
+				// Add in 0x's name
+				$results['JSONAPI By 0xBit'] = ':)';
+
+				// Set the header and return the results
+				header('Content-type: application/json');
+				echo json_encode($results);
 			} else {
 				//INVALID REQUEST BECAUSE NAME WASN'T DEFINED.
 				http_response_code(400);
