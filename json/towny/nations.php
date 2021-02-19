@@ -22,7 +22,7 @@
 				$nation = $_GET['name'];
 
 				// Build the query
-				$query = 'SELECT '.implode(', ', $columns_nations).' FROM `'.$column_nations.'`';
+				$query = 'SELECT '.implode(', ', $rows_nations).' FROM `'.$column_nations.'`';
 				$params = array();
 				if($nation !== 'allnations'){
 					// A nation was provided so ammend the query
@@ -36,7 +36,7 @@
 					$stmt->execute($params);
 
 					// Get the resulting data
-					$results = $array();
+					$results = array();
 					while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 						$results[$row['name']] = $row;
 						unset($results[$row['name']]['name']);
