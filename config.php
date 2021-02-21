@@ -42,10 +42,10 @@ $table_residents = "towny_residents";
 
 // Query for getting town data
 $query_towns = "
-    SELECT T.name, T.mayor, T.nation, T.assistants, T.townBoard, T.tag, T.open, T.public, T.spawn, T.outpostSpawns, T.outlaws, T.registered, COUNT(".$table_townblocks.".name)
+    SELECT T.name, T.mayor, T.nation, T.assistants, T.townBoard, T.tag, T.open, T.public, T.spawn, T.outpostSpawns, T.outlaws, T.registered, COUNT(".$table_townblocks.".town)
     FROM ".$table_towns." AS T
     LEFT JOIN ".$table_townblocks."
-    ON T.name = ".$table_townblocks.".name
+    ON T.name = ".$table_townblocks.".town
     GROUP BY T.name
 ";
 
