@@ -22,7 +22,7 @@
 				$resident = $_GET['name'];
 
 				// Build the query
-				$query = 'SELECT '.implode(', ', $rows_residents).' FROM `'.$column_residents.'`';
+				$query = $query_residents;
 				$params = array();
 				if($resident !== 'allresidents'){
 					// A nation was provided so ammend the query

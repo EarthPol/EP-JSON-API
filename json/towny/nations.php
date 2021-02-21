@@ -22,7 +22,7 @@
 				$nation = $_GET['name'];
 
 				// Build the query
-				$query = 'SELECT '.implode(', ', $rows_nations).' FROM `'.$column_nations.'`';
+				$query = $query_nations;
 				$params = array();
 				if($nation !== 'allnations'){
 					// A nation was provided so ammend the query

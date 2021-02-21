@@ -32,15 +32,34 @@ $pdo = new PDO($dsn, $username, $password);
 // For Windows based MySQL servers, typically all database are lower case.
 // For UNIX based MySQL servers, typically all databases are capitalized unless specified to not be.
 // You will need to capitalize these if it fails to find your database.
-$column_towns = "towny_towns";
-$column_nations = "towny_nations";
-$column_residents = "towny_residents";
+$table_towns = "towny_towns";
+$table_townblocks = "towny_townblocks";
+$table_nations = "towny_nations";
+$table_residents = "towny_residents";
 
+// If you modify the querys below, use https://github.com/TownyAdvanced/Towny/blob/master/src/com/palmergames/bukkit/towny/db/SQL_Schema.java for reference
+// Make sure you don't put any WHERE statements in the querys as that will break stuff
 
-// The columns to be returned to the user for each endpoint
-$rows_towns = array('name', 'mayor', 'nation', 'assistants', 'townBoard', 'tag', 'open', 'public', 'spawn', 'outpostSpawns', 'outlaws', 'registered');
-$rows_nations = array('name', 'capital', 'tag', 'allies', 'enemies', 'registered', 'nationBoard', 'mapColorHexCode', 'nationSpawn', 'isPublic', 'isOpen');
-$rows_residents = array('name', 'town', 'town-rank', 'nation-ranks', 'lastOnline', 'registered', 'title', 'surname', 'friends', 'uuid');
+// Query for getting town data
+$query_towns = "
+    SELECT T.name, T.mayor, T.nation, T.assistants, T.townBoard, T.tag, T.open, T.public, T.spawn, T.outpostSpawns, T.outlaws, T.registered, COUNT(".$table_townblocks.".name)
+    FROM ".$table_towns." AS T
+    LEFT JOIN ".$table_townblocks."
+    ON T.name = ".$table_townblocks.".name
+    GROUP BY T.name
+";
+
+// Query for getting nation data
+$query_nations = "
+    SELECT N.name, N.capital, N.tag, N.allies, N.enemies, N.registered, N.nationBoard, N.mapColorHexCode, N.nationSpawn, N.isPublic, N.isOpen,
+    FROM ".$table_nations." AS N
+";
+
+// Query for getting resident data
+$query_residents = "
+    SELECT R.name, R.town, R.town-rank, R.nation-ranks, R.lastOnline, R.registered, R.title, R.surname, R.friends, R.uuid
+    FROM ".$table_residents." AS R
+";
 
 // READ-ONLY USER MYSQL COMMAND LINE
 // GRANT SELECT, SHOW VIEW ON towny.* TO 'towny_readonly'@’localhost′ IDENTIFIED BY ‘supercalifragilisticexpialidocious‘;
