@@ -51,15 +51,15 @@ $query_towns = "
 
 // Query for getting nation data
 $query_nations = "
-    SELECT N.name, N.capital, N.tag, N.allies, N.enemies, N.registered, N.nationBoard, N.mapColorHexCode, N.nationSpawn, N.isPublic, N.isOpen,
-    FROM ".$table_nations." AS N
-";
+    SELECT name, capital, tag, allies, enemies, registered, nationBoard, mapColorHexCode, nationSpawn, isPublic, isOpen
+    FROM ".$table_nations
+;
 
 // Query for getting resident data
 $query_residents = "
-    SELECT R.name, R.town, R.town-rank, R.nation-ranks, R.lastOnline, R.registered, R.title, R.surname, R.friends, R.uuid
-    FROM ".$table_residents." AS R
-";
+    SELECT name, town, town-rank, nation-ranks, lastOnline, registered, title, surname, friends, uuid
+    FROM ".$table_residents
+;
 
 // READ-ONLY USER MYSQL COMMAND LINE
 // GRANT SELECT, SHOW VIEW ON towny.* TO 'towny_readonly'@’localhost′ IDENTIFIED BY ‘supercalifragilisticexpialidocious‘;
