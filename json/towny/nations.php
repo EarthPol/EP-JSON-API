@@ -21,14 +21,22 @@
 			if (isset($_GET['name'])) {
 				$nation = $_GET['name'];
 
-				// Build the query
-				$query = $query_nations;
+				// Check if parameters have been provided
 				$params = array();
+				$filter = array();
 				if($nation !== 'allnations'){
 					// A nation was provided so ammend the query
-					$query .= ' WHERE name = :name';
+					$filter[] = 'name = :name';
 					$params[':name'] = $nation;
 				}
+
+				// Build the query
+				if(empty($filter)) {
+					$filter = "";
+				} else {
+					$filter = "WHERE ".implode(" AND ", $filter);
+				}
+				$query = strtr($query_nations, array("%WHERE" => $filter));
 
 				try {
 					// Run the query

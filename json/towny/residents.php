@@ -21,14 +21,22 @@
 			if (isset($_GET['name'])) {
 				$resident = $_GET['name'];
 
-				// Build the query
-				$query = $query_residents;
+				// Check if parameters have been provided
 				$params = array();
-				if($resident !== 'allresidents'){
-					// A nation was provided so ammend the query
-					$query .= ' WHERE name = :name';
+				$filter = array();
+				if($resident !== 'allresidents') {
+					// A resident was provided so ammend the query
+					$filter[] = 'name = :name';
 					$params[':name'] = $resident;
 				}
+
+				// Build the query
+				if(empty($filter)) {
+					$filter = "";
+				} else {
+					$filter = "WHERE ".implode(" AND ", $filter);
+				}
+				$query = strtr($query_residents, array("%WHERE" => $filter));
 
 				try {
 					// Run the query
