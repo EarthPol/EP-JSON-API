@@ -57,7 +57,7 @@ $query_nations = "
 
 // Query for getting resident data
 $query_residents = "
-    SELECT name, town, town-rank, nation-ranks, lastOnline, registered, title, surname, friends, uuid
+    SELECT name, town, 'town-rank', 'nation-ranks', lastOnline, registered, title, surname, friends, uuid
     FROM ".$table_residents
 ;
 
