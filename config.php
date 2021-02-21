@@ -14,17 +14,11 @@ $apiKeys = true;
 
 
 // CONNECTION SETTINGS
-/*$host = "localhost";
+$host = "localhost";
 $port = 3306;
 $database = "towny";
 $username = "towny_readonly";
-$password = "supercalifragilisticexpialidocious";*/
-
-$host = "localhost";
-$port = 3306;
-$database = "minecraft";
-$username = "mc";
-$password = "minecraft";
+$password = "supercalifragilisticexpialidocious";
 //Read the Installation Guide on how to create a READ-ONLY user account for MYSQL Towny!
 
 //Do not edit unless you need to add additional flags.
