@@ -62,16 +62,19 @@
 			} else {
 				//INVALID REQUEST BECAUSE NAME WASN'T DEFINED.
 				http_response_code(400);
-				echo "<h1>400 - Bad Request</h1><h3>Verify you are using 'name=' in your request URL. </h3>";
+				header('Content-type: application/json');
+				echo $error400;
 			}
 		} else {
 			//INVALID KEY, VERIFY KEY IS VALID KEY FROM ADMIN
 			http_response_code(401);
-			echo "<h1>401 - Unauthorized Access</h1><h3>Please use a valid API Key provided to you by the System Administrator</h3>";
+			header('Content-type: application/json');
+			echo $error401a;
 		}
 	} else {
 		//Let the user know they are not authorized.
 		http_response_code(401);
-		echo "<h1>401 - Unauthorized Access</h1><h3>Verify you are using an API Key in your request URL. </h3>";
+		header('Content-type: application/json');
+		echo $error401b;
 	}
 ?>

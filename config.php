@@ -12,6 +12,10 @@
 // Keys can be found in "keys.php" and are set to default keys.
 $apiKeys = true;
 
+// Are you using TheNewEconomy with Towny? 
+// (Requires you give MySQL Read-only user access to TNE Database)
+$tne = true;
+
 
 // CONNECTION SETTINGS
 $host = "localhost";
@@ -43,6 +47,19 @@ $table_tne_balances = "tne_balances";
 // Make sure you don't put any WHERE statements in the querys as that will break stuff
 
 // Query for getting town data
+ $query_towns = '';
+
+if($tne == true){
+	$query_towns = "
+    SELECT T.name, T.mayor, T.nation, T.assistants, T.townBoard, T.tag, T.open, T.public, T.spawn, T.outpostSpawns, T.outlaws, T.registered, COUNT(".$table_towny_townblocks.".town) AS claimCount
+    FROM ".$table_towny_towns." AS T
+    LEFT JOIN ".$table_towny_townblocks."
+    ON T.name = ".$table_towny_townblocks.".town
+    %WHERE
+    GROUP BY T.name
+	";
+} else {
+
 $query_towns = "
     SELECT T.name, T.mayor, T.nation, T.assistants, T.townBoard, T.tag, T.open, T.public, T.spawn, T.outpostSpawns, T.outlaws, T.registered, COUNT(".$table_towny_townblocks.".town) AS claimCount, ".$table_tne_balances.".balance
     FROM ".$table_towny_towns." AS T
@@ -55,6 +72,8 @@ $query_towns = "
     %WHERE
     GROUP BY T.name
 ";
+}
+
 
 // Query for getting nation data
 $query_nations = "
@@ -72,4 +91,9 @@ $query_residents = "
 
 // READ-ONLY USER MYSQL COMMAND LINE
 // GRANT SELECT, SHOW VIEW ON towny.* TO 'towny_readonly'@’localhost′ IDENTIFIED BY ‘supercalifragilisticexpialidocious‘;
+
+//Error Responses
+$error400 = '{"Unauthorized_Access":"Verify you are using name= in your request URL."}';
+$error401a = '{"Unauthorized_Access":"Please use a valid API Key provided to you by the System Administrator"}';
+$error401b = '{"Unauthorized_Access":"Verify you are using an API Key in your request URL."}';
 ?>
