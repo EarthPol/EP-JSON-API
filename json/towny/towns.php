@@ -21,14 +21,22 @@
 			if (isset($_GET['name'])) {
 				$town = $_GET['name'];
 
-				// Build the query
-				$query = 'SELECT '.implode(', ', $rows_towns).' FROM `'.$column_towns.'`';
+				// Check if parameters have been provided
 				$params = array();
+				$filter = array();
 				if($town !== 'alltowns'){
-					// A nation was provided so ammend the query
-					$query .= ' WHERE name = :name';
+					// A town was provided so ammend the query
+					$filter[] = 'T.name = :name';
 					$params[':name'] = $town;
 				}
+
+				// Build the query
+				if(empty($filter)) {
+					$filter = "";
+				} else {
+					$filter = "WHERE ".implode(" AND ", $filter);
+				}
+				$query = strtr($query_towns, array("%WHERE" => $filter));
 
 				try {
 					// Run the query
