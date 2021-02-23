@@ -90,7 +90,7 @@ $query_residents = "
 ";
 
 // READ-ONLY USER MYSQL COMMAND LINE
-// GRANT SELECT, SHOW VIEW ON towny.* TO 'towny_readonly'@’localhost′ IDENTIFIED BY ‘supercalifragilisticexpialidocious‘;
+// GRANT SELECT, SHOW VIEW ON towny.* TO 'towny_readonly'@'localhost' IDENTIFIED BY 'supercalifragilisticexpialidocious';
 
 //Error Responses
 $error400 = '{"Unauthorized_Access":"Verify you are using name= in your request URL."}';
