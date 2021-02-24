@@ -1,7 +1,5 @@
 <?php
 	require('../../config.php');
-	// header('Content-type: application/json');
-	
 	// The response JSON payload
 	$response = array();
 	$response["JSONAPI By 0xBit & DeltaDeveloper! Made for EarthPol MC"] = ":)";

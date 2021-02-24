@@ -1,6 +1,5 @@
 <?php
 	require('../../config.php');
-	// header('Content-type: application/json');
 	
 	// The response JSON payload
 	$response = array();
