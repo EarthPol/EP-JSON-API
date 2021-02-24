@@ -93,7 +93,7 @@ $query_residents = "
 // GRANT SELECT, SHOW VIEW ON towny.* TO 'towny_readonly'@'localhost' IDENTIFIED BY 'supercalifragilisticexpialidocious';
 
 //Error Responses
-$error400 = '{"Unauthorized_Access":"Verify you are using name= in your request URL."}';
-$error401a = '{"Unauthorized_Access":"Please use a valid API Key provided to you by the System Administrator"}';
-$error401b = '{"Unauthorized_Access":"Verify you are using an API Key in your request URL."}';
+$ERR_NO_KEY = "Verify you are using an API Key in your request URL";
+$ERR_BAD_KEY = "Please use a valid API Key provided to you by the System Administrator";
+$ERR_NO_NAME = "Verify you are using name= in your request URL.";
 ?>
