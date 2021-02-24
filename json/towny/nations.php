@@ -1,5 +1,6 @@
 <?php
 	require('../../config.php');
+
 	// The response JSON payload
 	$response = array();
 	$response["JSONAPI By 0xBit & DeltaDeveloper! Made for EarthPol MC"] = ":)";
@@ -27,7 +28,7 @@
 				$params = array();
 				$filter = array();
 				if($nation !== 'allnations'){
-					// A nation was provided so ammend the query
+					// A nation was provided so amend the query
 					$filter[] = 'name = :name';
 					$params[':name'] = $nation;
 				}
