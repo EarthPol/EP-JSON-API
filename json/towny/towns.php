@@ -16,21 +16,16 @@
 		// Verify Key exists in Defined Keys (keys.php)
 		if(in_array($key, $keys)){
 			// KEYS WERE SET AND VALID
-			
-			// Set Variable for Town above requests to define as a global variable.
-			$town = null;
-			
-			//Gets ?name= from URL and sets it to $town variable, if ?name= is set.
-			if (isset($_GET['name'])) {
-				$town = $_GET['name'];
 
+			// Checks if the name parameter was set
+			if (isset($_GET['name'])) {
 				// Check if parameters have been provided
 				$params = array();
 				$filter = array();
-				if($town !== 'alltowns'){
+				if($_GET['name'] !== 'alltowns'){
 					// A town was provided so amend the query
 					$filter[] = 'name = :name';
-					$params[':name'] = $town;
+					$params[':name'] = $_GET['name'];
 				}
 
 				// Build the query
@@ -49,8 +44,7 @@
 					// Get the resulting data
 					$results = array();
 					while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-						$results[$row['name']] = $row;
-						unset($results[$row['name']]['name']);
+						$results[strtolower($row['name'])] = $row;
 					}
 				} catch(PDOException $e) {
 					die($e->getMessage());
