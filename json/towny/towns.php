@@ -44,8 +44,7 @@
 					// Get the resulting data
 					$results = array();
 					while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-						$results[$row['name']] = $row;
-						unset($results[$row['name']]['name']);
+						$results[strtolower($row['name'])] = $row;
 					}
 				} catch(PDOException $e) {
 					die($e->getMessage());
