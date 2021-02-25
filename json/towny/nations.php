@@ -17,20 +17,15 @@
 		if(in_array($key, $keys)){
 			// KEYS WERE SET AND VALID
 			
-			// Set Variable for Nation above requests to define as a global variable.
-			$nation = null;
-			
-			//Gets ?name= from URL and sets it to $nation variable, if ?name= is set.
+			// Checks if the name parameter was set
 			if (isset($_GET['name'])) {
-				$nation = $_GET['name'];
-
 				// Check if parameters have been provided
 				$params = array();
 				$filter = array();
-				if($nation !== 'allnations'){
+				if($_GET['name'] !== 'allnations'){
 					// A nation was provided so amend the query
 					$filter[] = 'name = :name';
-					$params[':name'] = $nation;
+					$params[':name'] = $_GET['name'];
 				}
 
 				// Build the query

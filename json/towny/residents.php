@@ -17,20 +17,20 @@
 		if(in_array($key, $keys)){
 			// KEYS WERE SET AND VALID
 			
-			// Set Variable for Resident above requests to define as a global variable.
-			$resident = null;
-			
-			//Gets ?name= from URL and sets it to $resident variable, if ?name= is set.
+			// Checks if the name parameter was set
 			if (isset($_GET['name'])) {
-				$resident = $_GET['name'];
-
 				// Check if parameters have been provided
 				$params = array();
 				$filter = array();
-				if($resident !== 'allresidents'){
+				if($_GET['name'] !== 'allresidents'){
 					// A resident was provided so amend the query
 					$filter[] = 'name = :name';
-					$params[':name'] = $resident;
+					$params[':name'] = $_GET['name'];
+				}
+				if($isset($_GET['town'])) {
+					// A town was provided so amend the query
+					$filter[] = 'town = :town';
+					$params[':town'] = $_GET['town'];
 				}
 
 				// Build the query
