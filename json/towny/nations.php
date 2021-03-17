@@ -57,29 +57,29 @@
 				// User failed to provide name
 				$response["status"] = "FAILURE";
 				$response["error"] = array(
-					"code":"ERR_NO_NAME",
-					"message":$ERR_NO_NAME
+					"code" => "ERR_NO_NAME",
+					"message" => $ERR_NO_NAME
 				);
 			}
 		} else {
 			// The user provided an invalid key
 			$response["status"] = "FAILURE";
 			$response["error"] = array(
-				"code":"ERR_BAD_KEY",
-				"message":$ERR_BAD_KEY
+				"code" => "ERR_BAD_KEY",
+				"message" => $ERR_BAD_KEY
 			);
 		}
 	} else {
 		// The user failed to provide a key
 		$response["status"] = "FAILURE";
 		$response["error"] = array(
-			"code":"ERR_NO_KEY",
-			"message":$ERR_NO_KEY
+			"code" => "ERR_NO_KEY",
+			"message" => $ERR_NO_KEY
 		);
 	}
 
 	// Send the response
 	http_response_code(200);
 	header('Content-type: application/json');
-	echo print_r($response);
+	echo json_encode($response);
 ?>
