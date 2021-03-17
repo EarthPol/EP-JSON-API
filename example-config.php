@@ -21,7 +21,7 @@ $tne = True;
 $host = "localhost";
 $port = 3306;
 $username = "jsonapi_readonly";
-$password = "NbfTAT9YjtNxpgaJ";
+$password = "supercalifragilisticexpialidocious";
 //Read the Installation Guide on how to create a READ-ONLY user account for MYSQL Towny!
 
 //Do not edit unless you need to add additional flags.
@@ -34,7 +34,7 @@ $pdo = new PDO($dsn, $username, $password);
 // For UNIX based MySQL servers, typically all databases are capitalized unless specified to not be.
 // You will need to capitalize these if it fails to find your database.
 $db_towny = "towny";
-$db_tne = "economy";
+$db_tne = "tne";
 
 $table_towny_towns = "TOWNY_TOWNS";
 $table_towny_townblocks = "TOWNY_TOWNBLOCKS";
